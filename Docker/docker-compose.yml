@@ -2,13 +2,22 @@ version: '2'
 services:
   proxy_pool:
     volumes:
-     - ..:/usr/src/app
+    - ..:/usr/src/app
     ports:
-     - "5010:5010"
+    - "5010:5010"
     links:
-     - proxy_redis
+    - proxy_redis
     image: "proxy_pool"
+    networks:
+    - backend
+    depends_on:
+    - proxy_redis
   proxy_redis:
     ports:
-     - "6379:6379"
+    - "6379:6379"
     image: "redis"
+    networks:
+    - backend
+networks:
+  backend:
+    driver: bridge
